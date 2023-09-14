@@ -1,28 +1,9 @@
-const express = require("express");
-const cors = require("cors");
-const pool = require("./db.js");
-const app = express();
-
-app.use(cors());
-app.use(express.json());
-
-//creating routes
-
-//create a todo route
-app.post("/todos", async (req, res) => {
-  try {
-    const { description } = req.body;
-    console.log(description);
-    const newTodo = await pool.query(
-      "INSERT INTO todo(description) VALUES($1) RETURNING *",
-      [description]
-    );
-
-    res.json(newTodo.rows[0]);
-  } catch (err) {
-    console.error(err.message);
-  }
-});
+const { description } = req.body;
+const newTodo = await pool.query(
+  "INSERT INTO(description) VALUES($1) RETURNING *",
+  [description]
+);
+res.json(newTodo.rows[0]);
 
 //Get all todos
 app.get("/todos", async (req, res) => {
@@ -71,8 +52,4 @@ app.delete("/todos/:id", async (req, res) => {
   } catch (error) {
     console.error(error.message);
   }
-});
-
-app.listen(5000, () => {
-  console.log("Server running on port 5000");
 });

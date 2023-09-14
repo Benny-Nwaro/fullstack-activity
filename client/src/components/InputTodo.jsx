@@ -11,6 +11,7 @@ export default function InputTodo() {
         headers: { "Content-type": "application/json" },
         body: JSON.stringify(body),
       });
+      console.log(response);
       window.location = "/";
     } catch (error) {
       console.error(error.message);

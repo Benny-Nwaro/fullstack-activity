@@ -33,7 +33,7 @@ export default function ListTodo() {
         <thead className="border-b font-medium dark:border-neutral-500">
           <tr>
             <th scope="col" className=" py-2">
-              #
+              #SN
             </th>
             <th scope="col" className="py-2">
               Description
