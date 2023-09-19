@@ -1,5 +1,5 @@
-import React from "react";
-import { useState, useEffect } from "react";
+import React, { useEffect, useState } from "react";
+import EditTodo from "./EditTodo";
 
 export default function ListTodo() {
   const deleteTodo = async (id) => {
@@ -8,62 +8,55 @@ export default function ListTodo() {
         method: "DELETE",
       });
       setTodos(todos.filter((todo) => todo.todo_id !== id));
-    } catch (error) {
-      console.error(error.message);
+    } catch (err) {
+      console.error(err.message);
     }
   };
   const [todos, setTodos] = useState([]);
   const getTodos = async () => {
     try {
       const response = await fetch("http://localhost:5000/todos");
-      const jsonData = await response.json;
+      const jsonData = await response.json();
       setTodos(jsonData);
-    } catch (error) {
-      console.error(error.message);
+    } catch (err) {
+      console.error(err.message);
     }
   };
-
   useEffect(() => {
     getTodos();
   }, []);
 
   return (
     <>
-      <table className="min-w-full text-center text-sm font-light">
-        <thead className="border-b font-medium dark:border-neutral-500">
-          <tr>
-            <th scope="col" className=" py-2">
-              #SN
-            </th>
-            <th scope="col" className="py-2">
-              Description
-            </th>
-
-            <th scope="col" className="py-2 text-right ">
-              <h1 className="bg-transparent text-red-700 font-semibold py-2 px-4 ">
-                Delete
-              </h1>
-            </th>
-          </tr>
-        </thead>
-        <tbody>
-          {todos.map((todo) => (
-            <tr key={todo.todo_id}>
-              <td>{todo.description}</td>
-
-              <td>
-                {" "}
-                <button
-                  className="bg-transparent hover:bg-blue-500 text-blue-700 font-semibold hover:text-white py-2 px-4 border border-blue-500 hover:border-transparent rounded"
-                  onClick={() => deleteTodo(todo.todo_id)}
-                >
-                  Delete
-                </button>
-              </td>
+      <div className="ml-96">
+        <table>
+          <thead>
+            <tr>
+              <th>Description</th>
+              <th>Edit</th>
+              <th>Delete</th>
             </tr>
-          ))}
-        </tbody>
-      </table>
+          </thead>
+          <tbody>
+            {todos.map((todo) => (
+              <tr key={todo.todo_id}>
+                <td>{todo.description}</td>
+                <td>
+                  <EditTodo todo={todo} />
+                </td>
+                <td>
+                  <button
+                    className="bg-transparent hover:bg-red-500 text-red-700 font-semibold hover:text-white py-2 px-4  hover:border-transparent rounded"
+                    onClick={() => deleteTodo(todo.todo_id)}
+                  >
+                    Delete
+                  </button>
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
     </>
   );
 }
